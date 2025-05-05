@@ -6,8 +6,9 @@ from datetime import datetime
 import warnings
 warnings.filterwarnings("ignore")
 
-telegram_token = "8042153193:AAHwBA7Wgkhe9eU26eX9hfqPA-uch0gE2fE"
-chat_id = "99455629"
+import os
+
+TOKEN = os.getenv("TELEGRAM_TOKEN")
 timeframes = {"15m": 15, "1h": 60, "4h": 240}
 
 def get_coinbase_usd_pairs():
