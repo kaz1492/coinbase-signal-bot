@@ -1,20 +1,15 @@
 import os
+import time
 import requests
 import pandas as pd
 from telegram import Bot
-import time
 
-TOKEN = os.getenv("TELEGRAM_TOKEN")
-CHAT_ID = "99455629"
-bot = Bot(token=TOKEN)
+# پارامترهای اصلی
+TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
+CHAT_ID = os.getenv("CHAT_ID")
+bot = Bot(token=TELEGRAM_TOKEN)
 
-def get_coinbase_usd_pairs():
-    url = "https://api.exchange.coinbase.com/products"
-    response = requests.get(url)
-    data = response.json()
-    usd_pairs = [item["id"] for item in data if item["quote_currency"] == "USD"]
-    return usd_pairs
-
+# اندیکاتورهای تحلیل
 def fetch_ohlcv(pair, granularity):
     url = f"https://api.exchange.coinbase.com/products/{pair}/candles?granularity={granularity}"
     response = requests.get(url)
@@ -23,16 +18,15 @@ def fetch_ohlcv(pair, granularity):
     df = df.sort_values("time")
     df["ma50"] = df["close"].rolling(window=50).mean()
     df["ma200"] = df["close"].rolling(window=200).mean()
-    df["rsi"] = compute_rsi(df["close"], 14)
+    df["rsi"] = compute_rsi(df["close"])
     return df
 
 def compute_rsi(series, period=14):
     delta = series.diff()
-    gain = (delta.where(delta > 0, 0)).rolling(window=period).mean()
-    loss = (-delta.where(delta < 0, 0)).rolling(window=period).mean()
+    gain = delta.where(delta > 0, 0).rolling(window=period).mean()
+    loss = -delta.where(delta < 0, 0).rolling(window=period).mean()
     rs = gain / loss
-    rsi = 100 - (100 / (1 + rs))
-    return rsi
+    return 100 - (100 / (1 + rs))
 
 def check_signal(df):
     last = df.iloc[-1]
@@ -46,6 +40,12 @@ def check_signal(df):
         signal += "RSI Overbought | "
     return signal.strip(" | ")
 
+def get_coinbase_usd_pairs():
+    url = "https://api.exchange.coinbase.com/products"
+    response = requests.get(url)
+    data = response.json()
+    return [item["id"] for item in data if item["quote_currency"] == "USD"]
+
 def main():
     pairs = get_coinbase_usd_pairs()
     granularities = {"15m": 900, "1h": 3600, "4h": 14400}
@@ -57,10 +57,9 @@ def main():
                 continue
             signal = check_signal(df)
             if signal:
-                msg = f"Signal for {pair} on {name}:"
-msg = f"Signal for {pair} on {name}:\n{signal}"
+                msg = f"Signal for {pair} on {name}: {signal}"
                 bot.send_message(chat_id=CHAT_ID, text=msg)
-            time.sleep(1)
+                time.sleep(1)
 
 if __name__ == "__main__":
     main()
