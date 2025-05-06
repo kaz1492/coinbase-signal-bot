@@ -37,3 +37,9 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+# تست دستی ارسال پیام
+if __name__ == "__main__":
+    import asyncio
+    async def test():
+        await bot.send_message(chat_id=CHAT_ID, text="Test signal from Coinbase bot.")
+    asyncio.run(test())
