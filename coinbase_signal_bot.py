@@ -58,7 +58,7 @@ def main():
             signal = check_signal(df)
             if signal:
                 msg = f"Signal for {pair} on {name}:"
-{signal}"
+msg = f"Signal for {pair} on {name}:\n{signal}"
                 bot.send_message(chat_id=CHAT_ID, text=msg)
             time.sleep(1)
 
