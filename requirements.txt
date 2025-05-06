@@ -1,3 +1,6 @@
-python-telegram-bot==20.6
 pandas
+numpy
+ta
 requests
+websockets
+python-telegram-bot==13.15
