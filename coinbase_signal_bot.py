@@ -22,7 +22,7 @@ def simulate_signal():
     tp4 = entry * 1.08
     sl = entry * 0.975
     msg = (
-        f"📢 سیگنال خرید (Long) - BTC/USD
+        f"📢 سیگنال خرید (Long) - BTC/USD"
 "
         f"⏱ تایم‌فریم: 15 دقیقه
 "
