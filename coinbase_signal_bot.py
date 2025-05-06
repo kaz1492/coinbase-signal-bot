@@ -5,7 +5,7 @@ from telegram import Bot
 import time
 
 TOKEN = os.getenv("TELEGRAM_TOKEN")
-CHAT_ID = "YOUR_CHAT_ID"
+CHAT_ID = "99455629"
 bot = Bot(token=TOKEN)
 
 def get_coinbase_usd_pairs():
