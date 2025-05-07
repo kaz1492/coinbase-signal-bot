@@ -1,5 +1,5 @@
 services:
-  - type: background
+  - type: worker
     name: coinbase-signal-bot
     env: python
     plan: starter
