@@ -15,47 +15,52 @@ bot = Bot(token=BOT_TOKEN)
 
 USD_PAIRS = [
     "BTC-USD", "ETH-USD", "SOL-USD", "DOT-USD", "ATOM-USD", "XLM-USD",
-    "UNI-USD", "FIL-USD", "ALGO-USD", "RNDR-USD"
+    "UNI-USD", "FIL-USD", "ALGO-USD"
 ]
 
 order_volume_window = defaultdict(list)
-VOLUME_THRESHOLD = 100000  # USD
-sent_signals = {}
+VOLUME_THRESHOLD = 100000  # USD in volume
 
-def get_candles(symbol, granularity):
-    url = f"https://api.exchange.coinbase.com/products/{symbol}/candles?granularity={granularity}"
-    r = requests.get(url)
-    if r.status_code == 200:
-        data = r.json()
-        df = pd.DataFrame(data, columns=["time", "low", "high", "open", "close", "volume"])
-        df["time"] = pd.to_datetime(df["time"], unit="s")
-        df = df.sort_values("time")
-        return df
-    return None
+async def analyze_pair(pair):
+    url = f"wss://ws-feed.exchange.coinbase.com"
+    subscribe_message = {
+        "type": "subscribe",
+        "channels": [{"name": "ticker", "product_ids": [pair]}]
+    }
 
-async def check_signal():
-    while True:
-        for pair in USD_PAIRS:
-            df = get_candles(pair, 900)  # 15 minutes
-            if df is not None:
-                signal = calculate_indicators(df)
-                if signal and pair not in sent_signals:
-                    entry = df["close"].iloc[-1]
-                    direction = "خرید" if signal == "long" else "فروش"
-                    emoji = "✅" if signal == "long" else "❌"
-                    text = f"{pair} - سیگنال {direction} 📢\nورود: {entry:.4f} {emoji}\n🎯 تارگت‌ها:\n"
-                    if signal == "long":
-                        tps = [entry * 1.015, entry * 1.03, entry * 1.05, entry * 1.08]
-                        sl = entry * 0.975
-                    else:
-                        tps = [entry * 0.985, entry * 0.97, entry * 0.95, entry * 0.92]
-                        sl = entry * 1.025
-                    for i, tp in enumerate(tps, 1):
-                        text += f"• TP{i}: {tp:.4f}\n"
-                    text += f"❌ استاپ لاس: {sl:.4f}"
-                    bot.send_message(chat_id=CHAT_ID, text=text)
-                    sent_signals[pair] = time.time()
-        await asyncio.sleep(60)
+    async with websockets.connect(url) as ws:
+        await ws.send(json.dumps(subscribe_message))
+        while True:
+            try:
+                message = await asyncio.wait_for(ws.recv(), timeout=10)
+                data = json.loads(message)
+                if "price" in data and "volume_24h" in data:
+                    price = float(data["price"])
+                    volume = float(data["volume_24h"])
+                    order_volume_window[pair].append(volume)
+                    if len(order_volume_window[pair]) > 3:
+                        order_volume_window[pair].pop(0)
+                    avg_volume = sum(order_volume_window[pair]) / len(order_volume_window[pair])
+                    if volume > avg_volume * 1.2 and volume > VOLUME_THRESHOLD:
+                        await send_signal(pair, price, "buy")
+            except Exception as e:
+                print(f"Error in analyze_pair {pair}: {e}")
+                continue
+
+async def send_signal(pair, entry_price, signal_type):
+    entry = round(entry_price, 4)
+    if signal_type == "buy":
+        tp1 = round(entry * 1.015, 4)
+        tp2 = round(entry * 1.03, 4)
+        tp3 = round(entry * 1.05, 4)
+        tp4 = round(entry * 1.08, 4)
+        sl = round(entry * 0.975, 4)
+        text = f"{pair} - BUY SIGNAL\nEntry: {entry}\nTargets:\nTP1: {tp1}\nTP2: {tp2}\nTP3: {tp3}\nTP4: {tp4}\nSTOP LOSS: {sl}"
+        await bot.send_message(chat_id=CHAT_ID, text=text)
+
+async def main():
+    tasks = [analyze_pair(pair) for pair in USD_PAIRS]
+    await asyncio.gather(*tasks)
 
 if __name__ == "__main__":
-    asyncio.run(check_signal())
+    asyncio.run(main())
