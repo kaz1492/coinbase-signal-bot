@@ -1,12 +1,6 @@
 services:
   - type: worker
-    name: coinbase-signal-bot
+    name: signal-bot
     env: python
-    plan: starter
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "python coinbase_signal_bot.py"
-    envVars:
-      - key: BOT_TOKEN
-        sync: false
-      - key: CHAT_ID
-        sync: false
+    buildCommand: pip install -r requirements.txt
+    startCommand: python coinbase_signal_bot.py
