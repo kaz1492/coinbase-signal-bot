@@ -1,0 +1,26 @@
+[
+  {
+    "symbol": "BTC-USD",
+    "type": "Buy",
+    "entry": 61450,
+    "tp1": 62300,
+    "tp2": 63000,
+    "tp3": 64000,
+    "tp4": 65500,
+    "sl": 59900,
+    "leverage": "8x",
+    "timeframe": "15m"
+  },
+  {
+    "symbol": "ETH-USD",
+    "type": "Sell",
+    "entry": 3120,
+    "tp1": 3080,
+    "tp2": 3050,
+    "tp3": 3000,
+    "tp4": 2950,
+    "sl": 3180,
+    "leverage": "10x",
+    "timeframe": "15m"
+  }
+]
