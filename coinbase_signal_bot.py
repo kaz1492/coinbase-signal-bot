@@ -23,3 +23,7 @@ FIL-USD – سیگنال احتمالی
 """
 
 print(signal_message)
+
+
+from telegram_sender_updated import send_telegram_message
+send_telegram_message(signal_message)
