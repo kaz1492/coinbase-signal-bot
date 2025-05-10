@@ -1,25 +1,28 @@
 import ccxt
+import pandas as pd
 from utils import calculate_indicators, generate_signal
 from config import SYMBOLS
 from telegram_sender import send_signal_message
 
-# تعریف نگاشت تایم‌فریم‌های متنی به ثانیه برای Coinbase
+# نگاشت تایم‌فریم متنی به مقدار عددی (ثانیه) برای Coinbase
 GRANULARITY_MAP = {
     "15m": 900,
     "1h": 3600,
-    "4h": 14400  # 4 ساعت = 4 * 3600 = 14400 ثانیه
+    "4h": 14400
 }
 
 def fetch_ohlcv(symbol, timeframe):
     exchange = ccxt.coinbase()
     granularity = GRANULARITY_MAP[timeframe]
     data = exchange.fetch_ohlcv(symbol, timeframe=granularity, limit=100)
-    return data
+    df = pd.DataFrame(data, columns=["timestamp", "open", "high", "low", "close", "volume"])
+    df["timestamp"] = pd.to_datetime(df["timestamp"], unit="ms")
+    return df
 
 def analyze_symbol(symbol, timeframe):
     try:
-        raw_data = fetch_ohlcv(symbol, timeframe)
-        df = calculate_indicators(raw_data)
+        df = fetch_ohlcv(symbol, timeframe)
+        df = calculate_indicators(df)
         signal = generate_signal(df)
         if signal:
             send_signal_message(symbol, signal, timeframe)
