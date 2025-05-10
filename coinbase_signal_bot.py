@@ -4,7 +4,6 @@ from utils import calculate_indicators, generate_signal
 from config import SYMBOLS
 from telegram_sender import send_signal_message
 
-# نگاشت تایم‌فریم متنی به مقدار عددی (ثانیه) برای Coinbase
 GRANULARITY_MAP = {
     "15m": 900,
     "1h": 3600,
