@@ -1,15 +1,15 @@
-
+import os
 import requests
 
-BOT_TOKEN = "8042153193:AAHduu2kNtc5F-oZ5H0_K2vcLqUr4Hvw8EY"
-CHAT_ID = "99455629"  # Chat ID تأییدشده از سمت کاربر
+TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
+CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 
-def send_telegram_message(message: str):
-    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+def send_signal_message(symbol, signal, timeframe):
+    message = f"{symbol} [{timeframe}]\nSignal: {signal['type']}\nEntry: {signal['entry']}\nTP1: {signal['tp1']} TP2: {signal['tp2']}\nSL: {signal['sl']}"
+    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
     payload = {
         "chat_id": CHAT_ID,
         "text": message,
         "parse_mode": "HTML"
     }
-    response = requests.post(url, data=payload)
-    return response.status_code, response.text
+    requests.post(url, data=payload)

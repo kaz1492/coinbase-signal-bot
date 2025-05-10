@@ -1,26 +1,13 @@
-
-import datetime
-
-class DeltaAnalyzer:
-    def __init__(self):
-        self.order_data = []
-
-    def process_trade(self, price, size, side, timestamp):
-        self.order_data.append({
-            "price": price,
-            "size": size,
-            "side": side,
-            "timestamp": timestamp
-        })
-
-    def calculate_candle_delta(self, start_time, end_time):
-        buy_volume = 0
-        sell_volume = 0
-        for trade in self.order_data:
-            if start_time <= trade["timestamp"] <= end_time:
-                if trade["side"] == "buy":
-                    buy_volume += float(trade["size"])
-                elif trade["side"] == "sell":
-                    sell_volume += float(trade["size"])
-        delta = buy_volume - sell_volume
-        return delta, buy_volume, sell_volume
+def detect_delta_anomaly(df):
+    delta = df['buy_volume'] - df['sell_volume']
+    df['delta'] = delta
+    signals = []
+    for i in range(1, len(df)):
+        if df['delta'][i] < 0 and df['close'][i] > df['open'][i]:
+            signals.append('possible_sell_exhaustion')
+        elif df['delta'][i] > 0 and df['close'][i] < df['open'][i]:
+            signals.append('possible_buy_exhaustion')
+        else:
+            signals.append(None)
+    df['delta_signal'] = signals
+    return df
