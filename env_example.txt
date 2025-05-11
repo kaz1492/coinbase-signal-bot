@@ -1,5 +1,0 @@
-TELEGRAM_TOKEN=your-telegram-bot-token-here
-TELEGRAM_CHAT_ID=your-chat-id-here
-EMAIL_SENDER=youremail@gmail.com
-EMAIL_PASSWORD=your-email-password
-EMAIL_RECEIVER=receiveremail@gmail.com
