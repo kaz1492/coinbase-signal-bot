@@ -1,3 +1,0 @@
-SYMBOLS = [
-    "BTC/USD", "ETH/USD", "ADA/USD", "B3/USD"
-]
