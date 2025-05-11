@@ -4,10 +4,9 @@ jinja2
 requests
 websocket-client
 numpy
-ta
-pandas
-pandas-ta
+TA-Lib==0.4.28
 ccxt
+pandas
 python-dotenv
-websockets
-telegram
+sqlite3
+python-telegram-bot==20.8
