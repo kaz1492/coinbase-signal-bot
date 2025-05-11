@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+jinja2
+requests
+websocket-client
+numpy
+ta
+pandas
+pandas-ta
+ccxt
+python-dotenv
