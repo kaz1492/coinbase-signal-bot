@@ -10,3 +10,4 @@ pandas-ta
 ccxt
 python-dotenv
 websockets
+telegram
