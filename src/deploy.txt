@@ -1,0 +1,5 @@
+#!/bin/bash
+pip install -r requirements.txt
+python src/backtest/backtest_engine.py &
+uvicorn src.web.main:app --host 0.0.0.0 --port $PORT &
+python src/data_collection/coinbase_ws_listener.py

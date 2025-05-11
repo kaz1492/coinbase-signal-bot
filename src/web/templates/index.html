@@ -1,0 +1,66 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <title>داشبورد سیگنال‌های رمزارز</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white p-6">
+    <h1 class="text-3xl font-bold mb-6 text-center">سیگنال‌های Coinbase</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {% for signal in signals %}
+            <div class="p-4 rounded-lg shadow-lg transition transform hover:scale-105
+                        {% if signal.type == 'long' %}bg-gradient-to-br from-green-400 to-teal-600
+                        {% else %}bg-gradient-to-br from-red-500 to-orange-600{% endif %}">
+                <h2 class="text-xl font-bold">{{ signal.pair }} <span class="text-sm">({{ signal.timeframe }})</span></h2>
+                <p>نوع: <strong>{{ signal.type }}</strong></p>
+                <p>ورود: {{ signal.entry }}</p>
+                <p>TP1: {{ signal.tps[0] }} | TP2: {{ signal.tps[1] }}</p>
+                <p>TP3: {{ signal.tps[2] }} | TP4: {{ signal.tps[3] }}</p>
+                <p>SL: {{ signal.sl }}</p>
+                <p>اهرم: {{ signal.leverage }}</p>
+                <p>زمان: {{ signal.timestamp }}</p>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

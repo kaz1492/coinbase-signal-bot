@@ -1,0 +1,14 @@
+#!/bin/bash
+echo "Installing dependencies..."
+pip install -r requirements.txt
+
+echo "Starting WebSocket and signal generator..."
+python src/data_collection/coinbase_ws_listener.py &
+
+echo "Starting FastAPI server..."
+uvicorn src.web.main:app --host 0.0.0.0 --port 8000 &
+
+echo "Running backtest..."
+python src/backtest/backtest_engine.py
+
+wait
