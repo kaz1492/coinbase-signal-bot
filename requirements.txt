@@ -11,3 +11,4 @@ ccxt
 python-dotenv
 telegram
 python-telegram-bot==20.8
+websockets
