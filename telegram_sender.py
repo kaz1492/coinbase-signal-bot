@@ -1,32 +1,24 @@
 
 import requests
-import os
-from dotenv import load_dotenv
-
-# بارگذاری مقادیر از فایل .env
-load_dotenv()
 
 def send_telegram_signal(signal):
-    TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
-    CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+    TOKEN = "8042153193:AAHykVSyPK2gUGTYh3hv-BM77tuFglWEpek"
+    CHAT_ID = "99455629"
 
-    message = f"""
-✅ New Signal
-Type: {signal['type']}
-Symbol: {signal['symbol']}
-Entry: {signal['entry']}
-Target: {signal['target1']}
-Stoploss: {signal['stoploss']}
-Leverage: {signal['leverage']}x
-"""
+    message = f"**Test Signal**\n" \
+              f"Type: {signal['type']}\n" \
+              f"Symbol: {signal['symbol']}\n" \
+              f"Entry: {signal['entry']}\n" \
+              f"Target1: {signal['target1']}\n" \
+              f"Stoploss: {signal['stoploss']}\n" \
+              f"Leverage: {signal['leverage']}x"
 
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
     data = {
         "chat_id": CHAT_ID,
         "text": message,
-        "parse_mode": "HTML"
+        "parse_mode": "Markdown"
     }
 
     response = requests.post(url, data=data)
-    if response.status_code != 200:
-        print("Telegram Error:", response.text)
+    print(f"Telegram response: {response.status_code}, {response.text}")
