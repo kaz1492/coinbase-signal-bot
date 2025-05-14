@@ -82,8 +82,8 @@ def analyze(pair, tf_seconds, tf_label):
         t3 = round(entry * 1.03, 6)
         t4 = round(entry * 1.05, 6)
         lev = calculate_leverage(entry, sl, t1)
-        win_rate = 75
-        if win_rate >= 70:
+        win_rate = 60
+        if win_rate >= 60:
             signal = {
                 "symbol": pair,
                 "entry_low": round(entry * 0.998, 6),
