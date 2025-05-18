@@ -5,7 +5,7 @@ from utils import calculate_indicators
 from delta_analyzer import analyze_delta
 from lux_smc_engine import apply_smc_logic
 from telegram_sender import send_telegram_signal
-from config import PAIRS, TIMEFRAMES
+from src.config import PAIRS, TIMEFRAMES, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
 
 def generate_signals(market_data):
     signals = []
