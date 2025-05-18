@@ -29,3 +29,4 @@ def generate_signals(market_data):
                 signals.append(signal)
                 send_telegram_signal(signal)
     return signals
+from src.config import PAIRS, TIMEFRAMES, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
