@@ -19,3 +19,5 @@ def run_signal_bot():
 
 if __name__ == "__main__":
     run_signal_bot()
+for sig in signals:
+    print(f"[SIGNAL] {sig}")
