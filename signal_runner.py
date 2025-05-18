@@ -21,3 +21,5 @@ if __name__ == "__main__":
     run_signal_bot()
 for sig in signals:
     print(f"[SIGNAL] {sig}")
+if not signals:
+    print("[INFO] No signals generated in this cycle.")
