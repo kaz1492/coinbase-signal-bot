@@ -119,6 +119,6 @@ async def main():
             except Exception as e:
                 print("Error:", e)
                 break
-
+from config import PAIRS, TIMEFRAMES, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
 if __name__ == "__main__":
     asyncio.run(main())
