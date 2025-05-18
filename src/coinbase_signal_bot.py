@@ -74,12 +74,9 @@ async def analyze_and_signal(symbol, price):
     df_all = calculate_indicators(df_all)
     pattern = detect_candle_patterns(df_all)
 
-    latest = df_all.iloc[-1]
-    signal_type = None
-    if latest["close"] > latest["open"] and latest["macd_diff"] > 0 and latest["rsi"] < 40:
-        signal_type = "LONG"
-    elif latest["close"] < latest["open"] and latest["macd_diff"] < 0 and latest["rsi"] > 60:
-        signal_type = "SHORT"
+    signal_type = "LONG"
+score = 5
+await send_signal(symbol, price, signal_type, score, latest["atr"])
 
     if signal_type:
         score = score_signal(latest, pattern, signal_type)
