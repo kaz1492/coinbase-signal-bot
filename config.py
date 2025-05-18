@@ -1,8 +1,7 @@
 # config.py
-# Configuration settings for pairs, timeframes, and Telegram
-
-PAIRS = ["BTC/USD", "ETH/USD", "B3/USD", "ADA/USD"]
+# Configuration settings for pairs, timeframes, and PAIRS = ["BTC/USD", "ETH/USD", "B3/USD", "MATH/USD", "WELL/USD"]
 TIMEFRAMES = ["15m", "1h", "4h"]
 
-TELEGRAM_BOT_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"
-TELEGRAM_CHAT_ID = "YOUR_CHAT_ID"
+TELEGRAM_BOT_TOKEN = "8042153193:AAGLLK2SUi3dnVCwuN93mRzdbSuBGf1I3Vs"
+TELEGRAM_CHAT_ID = "99455629"  # یا chat_id شخصی شما (یا @channel_username)
+
