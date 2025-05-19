@@ -49,7 +49,7 @@ async def send_signal(symbol, entry_price, signal_type, score, atr):
     msg += f"• TP4: {targets[3]}\n\n"
     msg += f"Stop Loss: {sl}\n"
     msg += f"Confidence Score: {score}/5"
-
+print("Sending message to Telegram:", msg)
     await bot.send_message(chat_id=CHAT_ID, text=msg)
 
 def prune_old_orders(pair):
