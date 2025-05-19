@@ -8,5 +8,5 @@ PAIRS = [
 
 TIMEFRAMES = ["15m", "1h", "4h"]
 
-TELEGRAM_BOT_TOKEN = "8042153193:AAGLLK2SUi3dnVCwuN93mRzdbSuBGf1I3Vs"
+TELEGRAM_BOT_TOKEN = "7236197115:AAFFzBbjbeAHjNxo5VzFab61IxPXa5A2DEg"
 TELEGRAM_CHAT_ID = "99455629"  # یا chat_id شخصی شما (یا @channel_username)
