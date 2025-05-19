@@ -98,6 +98,7 @@ async def subscribe(ws):
     }))
 
 async def handle_message(message):
+print("[DEBUG] Incoming message:", message)
     data = json.loads(message)
     if data["type"] == "match":
         symbol = data.get("product_id")
