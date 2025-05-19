@@ -1,11 +1,6 @@
 
-import os
-from telegram import Bot
+os.getenv("TELEGRAM_CHAT_ID")
 
-TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
-CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
-
-bot = Bot(token=TOKEN)
 
 async def send_signal(symbol, entry_price, signal_type, score):
     tp_factors = [1.05, 1.10, 1.20, 1.30] if signal_type == "LONG" else [0.95, 0.90, 0.85, 0.80]
