@@ -130,3 +130,6 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+# تست ارسال پیام به تلگرام هنگام اجرای ربات
+if __name__ == "__main__":
+    asyncio.run(bot.send_message(chat_id=CHAT_ID, text="✅ ربات به درستی اجرا شد"))
