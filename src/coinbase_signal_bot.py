@@ -91,9 +91,10 @@ await send_signal(symbol, price, signal_type, score, latest["atr"])
 
 async def subscribe(ws):
     await ws.send(json.dumps({
-        "type": "subscribe",
-        "product_ids": USD_PAIRS,
-        "channels": ["full"]
+    "type": "subscribe",
+    "product_ids": ["BTC-USD", "ETH-USD"],  # فقط این دو برای تست
+    "channels": ["full"]
+}))
     }))
 
 async def handle_message(message):
@@ -111,7 +112,7 @@ async def handle_message(message):
 
 async def main():
     async with websockets.connect("wss://ws-feed.exchange.coinbase.com") as ws:
- print("[DEBUG] WebSocket connection established")      
+    print("[DEBUG] WebSocket connection established")      
         await subscribe(ws)
         while True:
             try:
