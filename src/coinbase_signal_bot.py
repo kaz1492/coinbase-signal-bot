@@ -111,6 +111,7 @@ async def handle_message(message):
 
 async def main():
     async with websockets.connect("wss://ws-feed.exchange.coinbase.com") as ws:
+ print("[DEBUG] WebSocket connection established")      
         await subscribe(ws)
         while True:
             try:
