@@ -116,6 +116,7 @@ async def handle_message(message):
             order_volume_window[symbol] = []
 
 async def main():
+ await bot.send_message(chat_id=CHAT_ID, text="Bot started successfully!")
     async with websockets.connect("wss://ws-feed.exchange.coinbase.com") as ws:
         print("WebSocket connected successfully.")
     await subscribe(ws)
