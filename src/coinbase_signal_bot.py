@@ -92,8 +92,8 @@ await send_signal(symbol, price, signal_type, score, latest["atr"])
 async def subscribe(ws):
     await ws.send(json.dumps({
     "type": "subscribe",
-    "product_ids": ["BTC-USD", "ETH-USD"],  # فقط این دو برای تست
-    "channels": ["full"]
+    "product_ids": ["BTC-USD"]
+    "channels": ["ticker"]
 }))
     }))
 
