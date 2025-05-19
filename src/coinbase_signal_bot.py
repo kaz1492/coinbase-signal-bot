@@ -1,10 +1,9 @@
 
-import asyncio
-import requests
+import os
 from telegram import Bot
 
-TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"
-CHAT_ID = "YOUR_TELEGRAM_CHAT_ID"
+TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 
 bot = Bot(token=TOKEN)
 
