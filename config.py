@@ -1,3 +1,7 @@
+import os
+
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 # config.py
 # Configuration settings for pairs, timeframes, and PAIRS = ["BTC/USD", "ETH/USD", "B3/USD", "MATH/USD", "WELL/USD"]
 TIMEFRAMES = ["15m", "1h", "4h"]
