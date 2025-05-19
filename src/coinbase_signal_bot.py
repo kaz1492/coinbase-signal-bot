@@ -80,7 +80,9 @@ await send_signal(symbol, price, signal_type, score, latest["atr"])
 
     if signal_type:
         score = score_signal(latest, pattern, signal_type)
+      print("Signal detected:", signal_type, "Score:", score, "Pair:", symbol)
         if score >= 4:
+            
             now = time.time()
             last_sent = sent_signals.get(symbol, 0)
             if now - last_sent > 30:
