@@ -115,7 +115,9 @@ async def handle_message(message):
             await analyze_and_signal(symbol, price)
             order_volume_window[symbol] = []
 
-async def main():
+if __name__ == "__main__":
+    import asyncio
+    asyncio.run(bot.send_message(chat_id=CHAT_ID, text="✅ تست موفقیت‌آمیز بود!"))
     async with websockets.connect("wss://ws-feed.exchange.coinbase.com") as ws:
         print("WebSocket connected successfully.")
     await subscribe(ws)
