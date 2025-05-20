@@ -1,0 +1,21 @@
+
+{
+    "B3/USD": {
+        "dominant_style": "Smart Money",
+        "secondary_style": "Order Flow",
+        "timeframe_styles": {
+            "15m": "ICT",
+            "1h": "FVG",
+            "4h": "Market Structure"
+        }
+    },
+    "SWFTC/USD": {
+        "dominant_style": "Price Action",
+        "secondary_style": "Fixed % Logic",
+        "timeframe_styles": {
+            "15m": "Breakout Pullback",
+            "1h": "ATR Trend",
+            "4h": "Volume Profile"
+        }
+    }
+}

@@ -1,4 +1,12 @@
-# config.py
-# This file contains your Telegram bot token
 
-TELEGRAM_BOT_TOKEN = "7236197115:AAFFzBbjbeAHjNxo5VzFab61IxPXa5A2DEg"
+# List of pairs to monitor
+PAIRS = [
+    "BTC/USD", "ETH/USD", "B3/USD", "SWFTC/USD", "ADA/USD", "XRP/USD"
+]
+
+# Timeframes to analyze
+TIMEFRAMES = [
+    "15m", "1h", "4h"
+]
+
+# Optional: thresholds, filter settings, etc.

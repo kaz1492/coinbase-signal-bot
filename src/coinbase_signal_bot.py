@@ -1,29 +1,20 @@
 
-import os
-import asyncio
-from telegram import Bot
+import pandas as pd
+from signal_generator import generate_signals
+from telegram_sender import send_signal_to_telegram
+from config import PAIRS, TIMEFRAMES
 
-# دریافت توکن و چت آیدی از محیط
-TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
-TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "").strip()
+def run_bot():
+    for pair in PAIRS:
+        for tf in TIMEFRAMES:
+            try:
+                print(f"Processing {pair} on {tf} timeframe...")
+                df = pd.read_csv(f"data/{pair.replace('/', '-')}_{tf}.csv")
+                signal = generate_signals(df, pair, tf)
+                if signal:
+                    send_signal_to_telegram(signal)
+            except Exception as e:
+                print(f"Error processing {pair} [{tf}]: {e}")
 
-bot = Bot(token=TELEGRAM_BOT_TOKEN)
-
-async def send_signal(symbol, entry_price, signal_type, score):
-    tp_factors = [1.05, 1.10, 1.20, 1.30]
-    sl_factor = 0.975 if signal_type == "BUY" else 1.025
-
-    targets = [round(entry_price * f, 6) for f in tp_factors]
-    sl = round(entry_price * sl_factor, 6)
-
-    msg = f"{signal_type} SIGNAL - {symbol}\n"
-    msg += f"Entry Price: {entry_price}\n"
-    msg += "Targets:\n"
-    msg += f"• TP1: {targets[0]}\n"
-    msg += f"• TP2: {targets[1]}\n"
-    msg += f"• TP3: {targets[2]}\n"
-    msg += f"• TP4: {targets[3]}\n"
-    msg += f"Stop Loss: {sl}\n"
-    msg += f"Confidence Score: {score}/5"
-
-    await bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=msg)
+if __name__ == "__main__":
+    run_bot()
