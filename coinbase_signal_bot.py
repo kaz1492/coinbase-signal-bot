@@ -1,16 +1,16 @@
 
 import os
 import asyncio
-import requests
 from telegram import Bot
 
-from config import TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
+TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "").strip()
 
 bot = Bot(token=TELEGRAM_BOT_TOKEN)
 
 async def send_signal(symbol, entry_price, signal_type, score):
     tp_factors = [1.05, 1.10, 1.20, 1.30]
-    sl_factor = 0.975 if signal_type == "BUY" else 1.025
+    sl_factor = 0.975 if signal_type == "LONG" else 1.025
 
     targets = [round(entry_price * f, 6) for f in tp_factors]
     sl = round(entry_price * sl_factor, 6)
@@ -26,7 +26,3 @@ async def send_signal(symbol, entry_price, signal_type, score):
     msg += f"Confidence Score: {score}/5"
 
     await bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=msg)
-
-# برای تست دستی
-if __name__ == "__main__":
-    asyncio.run(send_signal("BTC/USD", 66000, "BUY", 4.8))
