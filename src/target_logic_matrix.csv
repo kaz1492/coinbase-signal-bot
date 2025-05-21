@@ -1,7 +1,4 @@
-pair,timeframe,target_logic,hit_rate
-B3/USD,15m,fixed_percentage,72%
-B3/USD,1h,fibonacci_extension,78%
-SWFTC/USD,15m,market_structure,69%
-SWFTC/USD,1h,fixed_percentage,74%
-BTC/USD,4h,fibonacci_extension,83%
-ETH/USD,1h,ATR_based,76%
+coin,target_logic
+BTC/USD,market_structure
+ETH/USD,fibonacci
+B3/USD,atr

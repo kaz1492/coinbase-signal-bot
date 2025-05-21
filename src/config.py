@@ -1,12 +1,58 @@
-
-# List of pairs to monitor
-PAIRS = [
-    "BTC/USD", "ETH/USD", "B3/USD", "SWFTC/USD", "ADA/USD", "XRP/USD"
+COINS = [
+    "BTC-USD",
+    "ETH-USD",
+    "SOL-USD",
+    "ADA-USD",
+    "AVAX-USD",
+    "MATIC-USD",
+    "DOGE-USD",
+    "DOT-USD",
+    "SHIB-USD",
+    "LTC-USD",
+    "LINK-USD",
+    "ATOM-USD",
+    "AAVE-USD",
+    "BCH-USD",
+    "ICP-USD",
+    "ETC-USD",
+    "NEAR-USD",
+    "FIL-USD",
+    "SAND-USD",
+    "EGLD-USD",
+    "MANA-USD",
+    "ALGO-USD",
+    "RUNE-USD",
+    "XLM-USD",
+    "XRP-USD",
+    "UNI-USD",
+    "TRB-USD",
+    "CRV-USD",
+    "CHZ-USD",
+    "BAND-USD",
+    "SNX-USD",
+    "ZEC-USD",
+    "COMP-USD",
+    "1INCH-USD",
+    "BAT-USD",
+    "ENS-USD",
+    "FET-USD",
+    "RNDR-USD",
+    "GRT-USD",
+    "IMX-USD",
+    "KSM-USD",
+    "LRC-USD",
+    "NMR-USD",
+    "OCEAN-USD",
+    "QNT-USD",
+    "STORJ-USD",
+    "SUSHI-USD",
+    "YFI-USD",
+    "ZRX-USD",
+    "PYTH-USD",
+    "TIA-USD",
+    "WIF-USD",
+    "JUP-USD",
+    "B3-USD"
 ]
 
-# Timeframes to analyze
-TIMEFRAMES = [
-    "15m", "1h", "4h"
-]
-
-# Optional: thresholds, filter settings, etc.
+TIMEFRAMES = ["15m", "1h", "4h"]
