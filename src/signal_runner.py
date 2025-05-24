@@ -11,3 +11,11 @@ async def run_signal_scan(send_message):
 
     for signal in signals:
         await send_message(signal)
+import asyncio
+
+async def dummy_message_sender(message):
+    print(f"[TEST] {message}")
+
+# اجرای مستقیم برای تست
+if __name__ == "__main__":
+    asyncio.run(run_signal_scan(dummy_message_sender))
