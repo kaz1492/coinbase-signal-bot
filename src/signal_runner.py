@@ -6,3 +6,5 @@ async def run_signal_scan(send_message):
     signals = analyze_all_pairs()
     for signal in signals:
         await send_message(signal)
+if not signal:
+    print(f"No signal for {symbol} due to indicator mismatch.")
