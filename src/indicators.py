@@ -1,44 +1,29 @@
 import pandas as pd
-import numpy as np
-import ta
 
-def calculate_indicators(df):
-    df = df.copy()
-    df["rsi"] = ta.momentum.RSIIndicator(close=df["close"], window=14).rsi()
-    df["ema20"] = ta.trend.EMAIndicator(close=df["close"], window=20).ema_indicator()
-    df["ema50"] = ta.trend.EMAIndicator(close=df["close"], window=50).ema_indicator()
-    macd = ta.trend.MACD(close=df["close"])
-    df["macd_diff"] = macd.macd_diff()
-    df["adx"] = ta.trend.ADXIndicator(high=df["high"], low=df["low"], close=df["close"]).adx()
-    df["atr"] = ta.volatility.AverageTrueRange(high=df["high"], low=df["low"], close=df["close"]).average_true_range()
-    return df
+def calculate_sma(series, period):
+    return series.rolling(window=period).mean()
 
-def detect_candle_patterns(df):
-    last = df.iloc[-1]
-    prev = df.iloc[-2]
-    pattern = None
+def calculate_ema(series, period):
+    return series.ewm(span=period, adjust=False).mean()
 
-    # Bullish Engulfing
-    if prev["close"] < prev["open"] and last["close"] > last["open"] and last["close"] > prev["open"] and last["open"] < prev["close"]:
-        pattern = "bullish_engulfing"
-    # Bearish Engulfing
-    elif prev["close"] > prev["open"] and last["close"] < last["open"] and last["open"] > prev["close"] and last["close"] < prev["open"]:
-        pattern = "bearish_engulfing"
+def calculate_rsi(series, period=14):
+    delta = series.diff()
+    gain = (delta.where(delta > 0, 0)).rolling(window=period).mean()
+    loss = (-delta.where(delta < 0, 0)).rolling(window=period).mean()
+    rs = gain / loss
+    return 100 - (100 / (1 + rs))
 
-    return pattern
+def calculate_macd(series, fast=12, slow=26, signal=9):
+    ema_fast = calculate_ema(series, fast)
+    ema_slow = calculate_ema(series, slow)
+    macd_line = ema_fast - ema_slow
+    signal_line = calculate_ema(macd_line, signal)
+    histogram = macd_line - signal_line
+    return macd_line, signal_line, histogram
 
-def score_signal(row, pattern, signal_type):
-    score = 0
-    if signal_type == "LONG":
-        if row["rsi"] < 35: score += 1
-        if row["ema20"] > row["ema50"]: score += 1
-        if row["macd_diff"] > 0: score += 1
-        if row["adx"] > 20: score += 1
-        if pattern == "bullish_engulfing": score += 1
-    elif signal_type == "SHORT":
-        if row["rsi"] > 65: score += 1
-        if row["ema20"] < row["ema50"]: score += 1
-        if row["macd_diff"] < 0: score += 1
-        if row["adx"] > 20: score += 1
-        if pattern == "bearish_engulfing": score += 1
-    return score
+def calculate_bollinger_bands(series, period=20, std_dev=2):
+    sma = calculate_sma(series, period)
+    std = series.rolling(window=period).std()
+    upper_band = sma + std_dev * std
+    lower_band = sma - std_dev * std
+    return upper_band, sma, lower_band
